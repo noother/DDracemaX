@@ -1883,8 +1883,6 @@ void CEditor::RenderLayers(CUIRect ToolBox, CUIRect ToolBar, CUIRect View)
 				if(int Result = DoButton_Ex(m_Map.m_lGroups[g]->m_lLayers[i], aBuf, g==m_SelectedGroup&&i==m_SelectedLayer, &Button,
 					BUTTON_CONTEXT, Localize("Select layer. Right click for properties."), 0))
 				{
-					if(m_Map.m_lGroups[g]->m_lLayers[i] == m_Map.m_pTeleLayer || m_Map.m_lGroups[g]->m_lLayers[i] == m_Map.m_pSpeedupLayer)
-						m_Brush.Clear();
 					m_SelectedLayer = i;
 					m_SelectedGroup = g;
 					static int s_LayerPopupId = 0;
@@ -2421,12 +2419,14 @@ void CEditor::RenderFileDialog()
 			{
 				char aBuf[512];
 				str_format(aBuf, sizeof(aBuf), "%s/%s", m_pFileDialogPath, m_aFileDialogFileName);
-				Storage()->CreateFolder(aBuf, IStorage::TYPE_SAVE);
-				FilelistPopulate(IStorage::TYPE_SAVE);
-				if(m_FilesSelectedIndex >= 0 && !m_FileList[m_FilesSelectedIndex].m_IsDir)
-					str_copy(m_aFileDialogFileName, m_FileList[m_FilesSelectedIndex].m_aFilename, sizeof(m_aFileDialogFileName));
-				else
-					m_aFileDialogFileName[0] = 0;
+				if(Storage()->CreateFolder(aBuf, IStorage::TYPE_SAVE))
+				{
+					FilelistPopulate(IStorage::TYPE_SAVE);
+					if(m_FilesSelectedIndex >= 0 && !m_FileList[m_FilesSelectedIndex].m_IsDir)
+						str_copy(m_aFileDialogFileName, m_FileList[m_FilesSelectedIndex].m_aFilename, sizeof(m_aFileDialogFileName));
+					else
+						m_aFileDialogFileName[0] = 0;
+				}
 			}
 		}
 	}
@@ -3420,7 +3420,7 @@ void CEditor::UpdateAndRender()
 
 	if(Input()->KeyDown(KEY_F10))
 	{
-		Graphics()->TakeScreenshot();
+		Graphics()->TakeScreenshot(0);
 		m_ShowMousePointer = true;
 	}
 
