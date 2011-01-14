@@ -1005,6 +1005,21 @@ void CCharacter::HandleTiles(int Index)
 	{
 		UnFreeze();
 	}
+	else if(((m_TileIndex == TILE_DFREEZE) || (m_TileFIndex == TILE_DFREEZE)) && !m_Super && !m_DeepFreeze)
+	{
+		GameServer()->SendChatTarget(GetPlayer()->GetCID(),"You have been deeply freezed");
+		m_DeepFreeze = true;
+	}
+	else if(((m_TileIndex == TILE_DUNFREEZE) || (m_TileFIndex == TILE_DUNFREEZE)) && !m_Super && m_DeepFreeze)
+	{
+		GameServer()->SendChatTarget(GetPlayer()->GetCID(),"You have been thawed from deepfreeze");
+
+		if((m_TileIndex != TILE_FREEZE) && (m_TileFIndex != TILE_FREEZE)) {
+			UnFreeze();
+		}
+
+		m_DeepFreeze = false;
+	}
 	else if(((m_TileIndex == TILE_EHOOK_START) || (m_TileFIndex == TILE_EHOOK_START)) && !m_EndlessHook)
 	{
 		GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Endless hook has been activated");
