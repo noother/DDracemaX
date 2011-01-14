@@ -123,7 +123,7 @@ public:
 	int m_FreezeTime;
 	int m_FreezeTick;
 
-	bool m_EndlessHook;Z
+	bool m_EndlessHook;
 	
 	int m_Doored;
 
