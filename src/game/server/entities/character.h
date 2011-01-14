@@ -122,6 +122,9 @@ public:
 	//DDRace
 	int m_FreezeTime;
 	int m_FreezeTick;
+
+	bool m_DeepFreeze;
+	bool m_EndlessHook;
 	
 	int m_Doored;
 

@@ -555,7 +555,7 @@ void CGameContext::OnTick()
 			else if(m_VoteEnforce == VOTE_ENFORCE_YES_ADMIN)
 			{
 				char aBuf[64];
-				str_format(aBuf, sizeof(aBuf),"Vote passed enforced by '%s'",Server()->ClientName(m_VoteEnforcer));
+				str_format(aBuf, sizeof(aBuf),"Vote passed (enforced by admin)");
 				Console()->ExecuteLine(m_aVoteCommand, 3, -1, CServer::SendRconLineAuthed, Server(), SendChatResponseAll, this);
 				SendChat(-1, CGameContext::CHAT_ALL, aBuf);
 				dbg_msg("Vote","Due to vote enforcing, vote level has been set to 3");
@@ -565,7 +565,7 @@ void CGameContext::OnTick()
 			else if(m_VoteEnforce == VOTE_ENFORCE_NO_ADMIN)
 			{
 				char aBuf[64];
-				str_format(aBuf, sizeof(aBuf),"Vote failed enforced by '%s'",Server()->ClientName(m_VoteEnforcer));
+				str_format(aBuf, sizeof(aBuf),"Vote failed (enforced by admin)",Server()->ClientName(m_VoteEnforcer));
 				EndVote();
 				SendChat(-1, CGameContext::CHAT_ALL, aBuf);
 			}

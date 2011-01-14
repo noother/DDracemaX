@@ -776,8 +776,10 @@ void CCharacter::Tick()
 	}
 	
 	m_DoSplash = false;
-	if (g_Config.m_SvEndlessDrag)
+	if (g_Config.m_SvEndlessDrag || m_EndlessHook)
 		m_Core.m_HookTick = 0;
+	if (m_DeepFreeze && !m_Super)
+		Freeze();
 	if (m_Super && m_Core.m_Jumped > 1)
 		m_Core.m_Jumped = 1;
 	if (m_Super && g_Config.m_SvEndlessSuperHook)
@@ -1004,6 +1006,31 @@ void CCharacter::HandleTiles(int Index)
 	else if((m_TileIndex == TILE_UNFREEZE) || (m_TileFIndex == TILE_UNFREEZE))
 	{
 		UnFreeze();
+	}
+	else if(((m_TileIndex == TILE_DFREEZE) || (m_TileFIndex == TILE_DFREEZE)) && !m_Super && !m_DeepFreeze)
+	{
+		GameServer()->SendChatTarget(GetPlayer()->GetCID(),"You have been deeply freezed");
+		m_DeepFreeze = true;
+	}
+	else if(((m_TileIndex == TILE_DUNFREEZE) || (m_TileFIndex == TILE_DUNFREEZE)) && !m_Super && m_DeepFreeze)
+	{
+		GameServer()->SendChatTarget(GetPlayer()->GetCID(),"You have been thawed from deepfreeze");
+
+		if((m_TileIndex != TILE_FREEZE) && (m_TileFIndex != TILE_FREEZE)) {
+			UnFreeze();
+		}
+
+		m_DeepFreeze = false;
+	}
+	else if(((m_TileIndex == TILE_EHOOK_START) || (m_TileFIndex == TILE_EHOOK_START)) && !m_EndlessHook)
+	{
+		GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Endless hook has been activated");
+		m_EndlessHook = true;
+	}
+	else if(((m_TileIndex == TILE_EHOOK_END) || (m_TileFIndex == TILE_EHOOK_END)) && m_EndlessHook)
+	{
+		GameServer()->SendChatTarget(GetPlayer()->GetCID(),"Endless hook has been deactivated");
+		m_EndlessHook = false;
 	}
 	if(((m_TileIndex == TILE_STOP && m_TileFlags == ROTATION_270) || (m_TileIndexL == TILE_STOP && m_TileFlagsL == ROTATION_270) || (m_TileIndexL == TILE_STOPS && (m_TileFlagsL == ROTATION_90 || m_TileFlagsL ==ROTATION_270)) || (m_TileIndexL == TILE_STOPA) || (m_TileFIndex == TILE_STOP && m_TileFFlags == ROTATION_270) || (m_TileFIndexL == TILE_STOP && m_TileFFlagsL == ROTATION_270) || (m_TileFIndexL == TILE_STOPS && (m_TileFFlagsL == ROTATION_90 || m_TileFFlagsL == ROTATION_270)) || (m_TileFIndexL == TILE_STOPA) || (m_TileSIndex == TILE_STOP && m_TileSFlags == ROTATION_270) || (m_TileSIndexL == TILE_STOP && m_TileSFlagsL == ROTATION_270) || (m_TileSIndexL == TILE_STOPS && (m_TileSFlagsL == ROTATION_90 || m_TileSFlagsL == ROTATION_270)) || (m_TileSIndexL == TILE_STOPA)) && m_Core.m_Vel.x > 0)
 	{
