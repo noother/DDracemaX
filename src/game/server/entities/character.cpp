@@ -776,7 +776,7 @@ void CCharacter::Tick()
 	}
 	
 	m_DoSplash = false;
-	if (g_Config.m_SvEndlessDrag)
+	if (g_Config.m_SvEndlessDrag || m_EndlessHook)
 		m_Core.m_HookTick = 0;
 	if (m_Super && m_Core.m_Jumped > 1)
 		m_Core.m_Jumped = 1;
