@@ -999,11 +999,11 @@ void CCharacter::HandleTiles(int Index)
 	{
 		Controller->m_Teams.OnCharacterFinish(m_pPlayer->GetCID());
 	}
-	if(((m_TileIndex == TILE_FREEZE) || (m_TileFIndex == TILE_FREEZE)) && !m_Super)
+	if(((m_TileIndex == TILE_FREEZE) || (m_TileFIndex == TILE_FREEZE)) && !m_Super && !m_DeepFreeze)
 	{
 		Freeze(Server()->TickSpeed()*3);
 	}
-	else if((m_TileIndex == TILE_UNFREEZE) || (m_TileFIndex == TILE_UNFREEZE))
+	else if(((m_TileIndex == TILE_UNFREEZE) || (m_TileFIndex == TILE_UNFREEZE)) && !m_DeepFreeze)
 	{
 		UnFreeze();
 	}
