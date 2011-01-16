@@ -1009,12 +1009,12 @@ void CCharacter::HandleTiles(int Index)
 	}
 	else if(((m_TileIndex == TILE_DFREEZE) || (m_TileFIndex == TILE_DFREEZE)) && !m_Super && !m_DeepFreeze)
 	{
-		GameServer()->SendChatTarget(GetPlayer()->GetCID(),"You have been deeply freezed");
+		GameServer()->SendChatTarget(GetPlayer()->GetCID(),"You have been deeply frozed");
 		m_DeepFreeze = true;
 	}
 	else if(((m_TileIndex == TILE_DUNFREEZE) || (m_TileFIndex == TILE_DUNFREEZE)) && !m_Super && m_DeepFreeze)
 	{
-		GameServer()->SendChatTarget(GetPlayer()->GetCID(),"You have been thawed from deepfreeze");
+		GameServer()->SendChatTarget(GetPlayer()->GetCID(),"You have been thawed out from deepfreeze");
 
 		if((m_TileIndex != TILE_FREEZE) && (m_TileFIndex != TILE_FREEZE)) {
 			UnFreeze();
