@@ -176,7 +176,7 @@ void CGameContext::ConKillPlayer(IConsole::IResult *pResult, void *pUserData, in
 	{
 		pSelf->m_apPlayers[Victim]->KillCharacter(WEAPON_GAME);
 		char buf[512];
-		str_format(buf, sizeof(buf), "%s was killed by admin", pSelf->Server()->ClientName(Victim));
+		str_format(buf, sizeof(buf), "%s was killed by the server", pSelf->Server()->ClientName(Victim));
 		pSelf->SendChat(-1, CGameContext::CHAT_ALL, buf);
 	}
 }
